@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skinlux — Institut de Beauté</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #C9A96E; --gold-light: #E8D5B0; --gold-pale: #F7F0E6;
+      --rose: #E8C4C4; --rose-deep: #C4858B;
+      --dark: #1A1410; --dark-soft: #2E2520;
+      --text: #3D2F2A; --text-light: #7A6560; --white: #FDFAF6;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.4;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.4rem 4rem; background: rgba(253,250,246,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(201,169,110,0.2); }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 300; letter-spacing: 0.25em; color: var(--dark); text-transform: uppercase; }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-light); text-decoration: none; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta { background: var(--gold) !important; color: var(--white) !important; padding: 0.55rem 1.5rem !important; }
+    .nav-cta:hover { background: var(--rose-deep) !important; }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
+    .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 8rem 4rem 4rem 6rem; }
+    .hero-eyebrow { font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.8rem; display: flex; align-items: center; gap: 1rem; animation: fadeIn 0.8s ease 0.2s both; }
+    .hero-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--gold); }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3.2rem, 5.5vw, 5rem); font-weight: 300; line-height: 1.1; color: var(--dark); margin-bottom: 1.5rem; animation: fadeUp 0.9s ease 0.4s both; }
+    .hero h1 em { font-style: italic; color: var(--rose-deep); }
+    .hero-desc { font-size: 0.95rem; font-weight: 300; line-height: 1.8; color: var(--text-light); max-width: 380px; margin-bottom: 2.8rem; animation: fadeUp 0.9s ease 0.6s both; }
+    .hero-actions { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; animation: fadeUp 0.9s ease 0.8s both; }
+    .btn-wa { display: inline-flex; align-items: center; gap: 0.6rem; background: #1877F2; color: #fff; padding: 1rem 2.2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; font-weight: 500; transition: background 0.3s, transform 0.2s; }
+    .btn-wa:hover { background: #1465d8; transform: translateY(-2px); }
+    .btn-link { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-light); text-decoration: none; border-bottom: 1px solid var(--gold-light); padding-bottom: 2px; transition: color 0.3s, border-color 0.3s; }
+    .btn-link:hover { color: var(--gold); border-color: var(--gold); }
+    .hero-right { position: relative; background: var(--gold-pale); overflow: hidden; }
+    .hero-right::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(201,169,110,0.15), rgba(196,133,139,0.12)); }
+    .hero-ornament { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 320px; height: 320px; border: 1px solid rgba(201,169,110,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: spinSlow 40s linear infinite; }
+    .hero-ornament::before { content: ''; position: absolute; width: 260px; height: 260px; border: 1px solid rgba(201,169,110,0.2); border-radius: 50%; }
+    .hero-ornament-text { font-family: 'Cormorant Garamond', serif; font-size: 5.5rem; font-weight: 300; font-style: italic; color: rgba(201,169,110,0.22); line-height: 1; text-align: center; }
+    .hero-badge { position: absolute; bottom: 3rem; right: 3rem; background: var(--white); padding: 1.5rem; box-shadow: 0 8px 40px rgba(0,0,0,0.08); text-align: center; }
+    .hero-badge-num { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--gold); line-height: 1; }
+    .hero-badge-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-light); margin-top: 0.3rem; }
+
+    /* BANNER */
+    .banner-laser { background: linear-gradient(135deg, var(--rose-deep), #a06065); color: #fff; text-align: center; padding: 0.9rem 2rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    .banner-laser strong { font-weight: 500; }
+
+    /* SECTIONS */
+    .sec { padding: 6rem; }
+    .section-label { font-size: 0.68rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem; }
+    .section-label::before { content: ''; display: block; width: 30px; height: 1px; background: var(--gold); }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 300; line-height: 1.2; color: var(--dark); margin-bottom: 1rem; }
+    .section-title em { font-style: italic; color: var(--rose-deep); }
+    .section-sub { font-size: 0.9rem; font-weight: 300; line-height: 1.8; color: var(--text-light); max-width: 500px; margin-bottom: 3.5rem; }
+
+    /* SERVICES */
+    #services { background: var(--dark-soft); color: var(--white); padding: 6rem; }
+    #services .section-title { color: var(--white); }
+    #services .section-sub { color: rgba(255,255,255,0.5); }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: rgba(201,169,110,0.15); border: 1px solid rgba(201,169,110,0.15); }
+    .sc { background: var(--dark-soft); padding: 2.8rem 2.2rem; position: relative; overflow: hidden; transition: background 0.4s; }
+    .sc:hover { background: #2a1f1a; }
+    .sc::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--gold); transition: width 0.4s; }
+    .sc:hover::after { width: 100%; }
+    .sc-num { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 1.2rem; opacity: 0.7; }
+    .sc-icon { font-size: 1.8rem; margin-bottom: 1rem; display: block; }
+    .sc-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; color: var(--white); margin-bottom: 0.8rem; line-height: 1.3; }
+    .sc-desc { font-size: 0.82rem; font-weight: 300; line-height: 1.7; color: rgba(255,255,255,0.45); }
+    .sc-price-block { margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid rgba(201,169,110,0.2); }
+    .sc-price { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--gold); }
+    .sc-price-sub { font-size: 0.74rem; color: rgba(255,255,255,0.33); margin-top: 0.25rem; font-style: italic; }
+    .sc-tag { display: inline-block; background: rgba(196,133,139,0.25); color: var(--rose); font-size: 0.64rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.2rem 0.7rem; border-radius: 20px; margin-bottom: 0.7rem; }
+
+    /* TARIFS */
+    #tarifs { background: var(--gold-pale); padding: 6rem; }
+    .tarifs-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem; }
+    .tarifs-note { font-size: 0.8rem; color: var(--text-light); font-style: italic; }
+    .t-block { margin-bottom: 2.8rem; }
+    .t-cat { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 500; font-style: italic; color: var(--gold); letter-spacing: 0.1em; padding-bottom: 0.8rem; border-bottom: 1px solid var(--gold-light); margin-bottom: 0.2rem; }
+    .t-badge { display: inline-block; background: rgba(201,169,110,0.2); color: var(--gold); font-size: 0.63rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.15rem 0.6rem; border-radius: 20px; margin-left: 0.5rem; vertical-align: middle; font-style: normal; }
+    table { width: 100%; border-collapse: collapse; }
+    tbody tr { border-bottom: 1px solid rgba(201,169,110,0.18); transition: background 0.2s; }
+    tbody tr:hover { background: rgba(201,169,110,0.08); }
+    td { padding: 0.85rem 0.5rem; font-size: 0.88rem; font-weight: 300; color: var(--text); vertical-align: top; }
+    td:last-child { text-align: right; font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--rose-deep); font-weight: 500; white-space: nowrap; }
+    .td-note { font-size: 0.74rem; color: var(--text-light); font-style: italic; display: block; margin-top: 0.15rem; }
+    .divider { text-align: center; padding: 2.5rem 0 0; color: var(--gold-light); font-size: 1.2rem; letter-spacing: 0.5em; opacity: 0.5; }
+
+    /* FAQ BLANCHIMENT */
+    #faq { background: var(--dark-soft); padding: 6rem; }
+    #faq .section-title { color: var(--white); }
+    #faq .section-sub { color: rgba(255,255,255,0.5); }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5px; background: rgba(201,169,110,0.12); border: 1px solid rgba(201,169,110,0.12); }
+    .faq-item { background: var(--dark-soft); padding: 2.2rem 2rem; position: relative; overflow: hidden; transition: background 0.3s; }
+    .faq-item:hover { background: #2a1f1a; }
+    .faq-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--gold); opacity: 0.4; transition: opacity 0.3s; }
+    .faq-item:hover::before { opacity: 1; }
+    .faq-q { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 500; color: var(--gold); margin-bottom: 0.9rem; line-height: 1.4; }
+    .faq-a { font-size: 0.83rem; font-weight: 300; line-height: 1.75; color: rgba(255,255,255,0.55); }
+    .faq-a strong { color: rgba(255,255,255,0.8); font-weight: 500; }
+
+    /* WHY */
+    .why-wrap { display: grid; grid-template-columns: 1fr 1fr; }
+    .why-l { background: var(--rose); padding: 6rem; display: flex; flex-direction: column; justify-content: center; }
+    .why-r { background: var(--white); padding: 6rem; display: flex; flex-direction: column; justify-content: center; }
+    .why-list { list-style: none; }
+    .why-list li { display: flex; gap: 1.2rem; align-items: flex-start; padding: 1.2rem 0; border-bottom: 1px solid rgba(201,169,110,0.2); }
+    .why-list li:last-child { border-bottom: none; }
+    .wi { width: 36px; height: 36px; background: var(--gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem; }
+    .wt strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--dark); margin-bottom: 0.3rem; }
+    .wt p { font-size: 0.82rem; font-weight: 300; line-height: 1.6; color: var(--text-light); }
+
+    /* CONTACT */
+    #contact { background: var(--dark); text-align: center; padding: 7rem 4rem; }
+    #contact .section-label { justify-content: center; }
+    #contact .section-label::before { display: none; }
+    #contact .section-title { color: var(--white); }
+    #contact .section-sub { color: rgba(255,255,255,0.45); margin: 0 auto 2.5rem; }
+    .wa-big { display: inline-flex; align-items: center; gap: 0.8rem; background: #1877F2; color: #fff; padding: 1.2rem 3rem; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-weight: 500; transition: background 0.3s, transform 0.2s; margin-bottom: 3.5rem; }
+    .wa-big:hover { background: #1465d8; transform: translateY(-3px); }
+    .ci-row { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+    .ci { text-align: center; }
+    .ci-label { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .ci-val { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: rgba(255,255,255,0.7); }
+
+    /* FOOTER */
+    footer { background: var(--dark-soft); padding: 2rem 6rem; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(201,169,110,0.1); }
+    .f-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-light); }
+    .f-copy { font-size: 0.7rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.25); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes spinSlow { from { transform:translate(-50%,-50%) rotate(0deg); } to { transform:translate(-50%,-50%) rotate(360deg); } }
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      nav { padding:1.2rem 2rem; }
+      .nav-links { display:none; }
+      .hero { grid-template-columns:1fr; min-height:auto; }
+      .hero-left { padding:8rem 2rem 3rem; }
+      .hero-right { height:260px; }
+      .sec, #services, #tarifs, #faq { padding:4rem 1.5rem; }
+      .services-grid { grid-template-columns:1fr; }
+      .faq-grid { grid-template-columns:1fr; }
+      .why-wrap { grid-template-columns:1fr; }
+      .why-l, .why-r { padding:4rem 1.5rem; }
+      footer { flex-direction:column; gap:0.5rem; padding:1.5rem 2rem; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Skin<span>lux</span></div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#tarifs">Tarifs</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#why">Pourquoi nous</a></li>
+    <li><a href="#contact" class="nav-cta">Prendre RDV</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="accueil">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Institut de Beauté Premium</div>
+    <h1>L'art du soin,<br>au service de votre <em>éclat</em></h1>
+    <p class="hero-desc">Skinlux vous propose des traitements esthétiques de haute qualité, pensés pour révéler la beauté naturelle de chaque peau.</p>
+    <div class="hero-actions">
+      <a href="https://www.facebook.com/share/1GQ6AZpVg1/" class="btn-wa">📘 Nous contacter sur Facebook</a>
+      <a href="#services" class="btn-link">Découvrir les soins</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-ornament">
+      <div class="hero-ornament-text">Skin<br>lux</div>
+    </div>
+    <div class="hero-badge">
+      <div class="hero-badge-num">8</div>
+      <div class="hero-badge-label">Soins exclusifs</div>
+    </div>
+  </div>
+</div>
+
+<!-- BANNER LASER -->
+<div class="banner-laser">⚡ <strong>Épilation au laser disponible à partir d'août 2026</strong> — Contactez-nous dès maintenant pour réserver votre bilan</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">Nos Soins</div>
+  <div class="section-title">Des traitements <em>d'exception</em></div>
+  <p class="section-sub">Chaque soin est réalisé avec des techniques avancées et des produits sélectionnés pour des résultats visibles et durables.</p>
+
+  <div class="services-grid">
+
+    <div class="sc">
+      <div class="sc-num">01</div>
+      <span class="sc-icon">✦</span>
+      <div class="sc-name">Blanchiment Dentaire</div>
+      <div class="sc-desc">Deux formules au choix selon le résultat souhaité. 2 séances idéales pour un résultat optimal et longue durée.</div>
+      <div class="sc-price-block">
+        <div class="sc-price">Classique — dès 70 €</div>
+        <div class="sc-price-sub">~1h · Résultat naturel & frais</div>
+        <div class="sc-price" style="margin-top:0.6rem;">White Glow Luxe — dès 125 €</div>
+        <div class="sc-price-sub">~1h30 · Résultat intense & ultra-lumineux</div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-num">02</div>
+      <span class="sc-icon">◈</span>
+      <div class="sc-name">Browlift Restructuration</div>
+      <div class="sc-desc">Remodelage professionnel du contour des sourcils pour un regard sublimé. Coloration incluse.</div>
+      <div class="sc-price-block">
+        <div class="sc-price">50 €</div>
+        <div class="sc-price-sub">Colo incluse</div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-num">03</div>
+      <span class="sc-icon">❋</span>
+      <div class="sc-name">Rehaussement de Cils</div>
+      <div class="sc-desc">Courbe naturelle et regard ouvert immédiatement. Technique douce pour des cils relevés et mis en beauté durablement.</div>
+      <div class="sc-price-block">
+        <div class="sc-price">40 €</div>
+        <div class="sc-price-sub">Colo incluse</div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-num">04</div>
+      <span class="sc-icon">◉</span>
+      <div class="sc-name">Hydrafacial</div>
+      <div class="sc-desc">Soin multi-étapes combinant nettoyage en profondeur, exfoliation, extraction et hydratation intense pour une peau éclatante.</div>
+      <div class="sc-price-block">
+        <div class="sc-price">55 €</div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-num">05</div>
+      <span class="sc-icon">✧</span>
+      <div class="sc-name">Microneedling</div>
+      <div class="sc-desc">Stimulation naturelle du collagène par micro-perforations contrôlées. Protocole en 4 séances avec soin du visage inclus.</div>
+      <div class="sc-price-block">
+        <div class="sc-price">90 € / séance</div>
+        <div class="sc-price-sub">4 séances recommandées · 4ème séance à −20% · Soin visage inclus</div>
+        <div class="sc-price" style="margin-top:0.6rem;">+ Hydrafacial — 120 €</div>
+        <div class="sc-price-sub">Combo ultra-régénérant · résultat nettement amplifié</div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-num">06</div>
+      <span class="sc-icon">◇</span>
+      <div class="sc-name">Soin du Visage de Base</div>
+      <div class="sc-desc">Protocole personnalisé selon votre type de peau — nettoyage profond, gommage, masques et hydratation ciblée.</div>
+      <div class="sc-price-block">
+        <div class="sc-price">35 €</div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-num">07</div>
+      <span class="sc-icon">✶</span>
+      <div class="sc-name">Peeling Chimique</div>
+      <div class="sc-desc">Renouvellement cellulaire en profondeur à l'aide d'acides sélectionnés. Plusieurs séances possibles selon l'attente et l'objectif.</div>
+      <div class="sc-price-block">
+        <div class="sc-price">70 € / séance</div>
+        <div class="sc-price-sub">Nombre de séances selon les besoins</div>
+      </div>
+    </div>
+
+    <div class="sc" style="border: 1px solid rgba(201,169,110,0.35);">
+      <div class="sc-num">09</div>
+      <span class="sc-icon">⚡</span>
+      <div class="sc-name" style="color:var(--gold-light);">Microneedling + Hydrafacial</div>
+      <div class="sc-tag" style="background:rgba(201,169,110,0.2);color:var(--gold-light);">Protocole combiné — Résultat amplifié</div>
+      <div class="sc-desc">Le duo le plus puissant pour transformer votre peau en une seule séance. Le microneedling crée des micro-canaux qui décuplent l'absorption des actifs, tandis que l'Hydrafacial repulpe, éclaire et hydrate en profondeur immédiatement après. Résultat : peau lissée, lumineuse, texturée et régénérée de façon nettement plus visible qu'avec chaque soin séparé.</div>
+      <div class="sc-price-block">
+        <div class="sc-price" style="font-size:1.2rem;">120 €</div>
+        <div class="sc-price-sub">Au lieu de 145 € séparément</div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-num">10</div>
+      <span class="sc-icon">⊹</span>
+      <div class="sc-name">Épilation au Laser</div>
+      <div class="sc-tag">Disponible dès août 2026</div>
+      <div class="sc-desc">Solution durable pour une peau douce et sans poils. Traitement adapté à tous les types de peau — visage et corps.</div>
+      <div class="sc-price-block">
+        <div class="sc-price">Voir tarifs détaillés ↓</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TARIFS -->
+<section id="tarifs">
+  <div class="tarifs-header">
+    <div>
+      <div class="section-label">Tarifs</div>
+      <div class="section-title">Nos <em>prix</em></div>
+    </div>
+    <div class="tarifs-note">📘 Prise de RDV uniquement via notre page Facebook</div>
+  </div>
+
+  <!-- Blanchiment -->
+  <div class="t-block">
+    <div class="t-cat">✦ Blanchiment Dentaire</div>
+    <table><tbody>
+      <tr>
+        <td>Blanchiment Classique — 1ère séance <span class="td-note">~1h · Résultat naturel</span></td>
+        <td>70 €</td>
+      </tr>
+      <tr>
+        <td>Blanchiment Classique — 2ème séance <span class="td-note">Recommandée pour optimiser le résultat</span></td>
+        <td>55 €</td>
+      </tr>
+      <tr>
+        <td>White Glow Luxe — 1ère séance <span class="td-note">~1h30 · Formule intense & ultra-lumineuse</span></td>
+        <td>125 €</td>
+      </tr>
+      <tr>
+        <td>White Glow Luxe — 2ème séance <span class="td-note">Recommandée pour optimiser le résultat</span></td>
+        <td>85 €</td>
+      </tr>
+    </tbody></table>
+  </div>
+
+  <!-- Cils & Sourcils -->
+  <div class="t-block">
+    <div class="t-cat">◈ Cils & Regard</div>
+    <table><tbody>
+      <tr>
+        <td>Rehaussement de cils <span class="td-note">Coloration incluse</span></td>
+        <td>40 €</td>
+      </tr>
+      <tr>
+        <td>Browlift restructuration <span class="td-note">Coloration incluse</span></td>
+        <td>50 €</td>
+      </tr>
+      <tr>
+        <td>Rehaussement de cils + Browlift <span class="td-note">Les deux soins combinés · Coloration incluse</span></td>
+        <td>70 €</td>
+      </tr>
+    </tbody></table>
+  </div>
+
+  <!-- Soins visage -->
+  <div class="t-block">
+    <div class="t-cat">◉ Soins du Visage</div>
+    <table><tbody>
+      <tr>
+        <td>Soin du visage de base</td>
+        <td>35 €</td>
+      </tr>
+      <tr>
+        <td>Hydrafacial</td>
+        <td>55 €</td>
+      </tr>
+      <tr>
+        <td>Peeling chimique <span class="td-note">Plusieurs séances possibles selon les besoins</span></td>
+        <td>70 € / séance</td>
+      </tr>
+      <tr>
+        <td>Microneedling <span class="td-note">Protocole 4 séances recommandées · Soin visage inclus</span></td>
+        <td>90 € / séance</td>
+      </tr>
+      <tr>
+        <td>Microneedling — 4ème séance <span class="td-note">Réduction fidélité</span></td>
+        <td>72 € <span class="td-note">−20%</span></td>
+      </tr>
+      <tr>
+        <td>✦ Microneedling + Hydrafacial <span class="td-note">Protocole combiné — résultat nettement plus prononcé</span></td>
+        <td>120 €</td>
+      </tr>
+    </tbody></table>
+  </div>
+
+  <!-- Laser visage -->
+  <div class="t-block">
+    <div class="t-cat">⊹ Épilation Laser — Visage <span class="t-badge">dès août 2026</span></div>
+    <table><tbody>
+      <tr><td>Lèvre supérieure</td><td>25 €</td></tr>
+      <tr><td>Menton</td><td>25 €</td></tr>
+      <tr><td>Joues</td><td>30 €</td></tr>
+      <tr><td>Cou</td><td>30 €</td></tr>
+      <tr><td>Visage complet</td><td>80 €</td></tr>
+      <tr><td>Visage + Cou</td><td>115 €</td></tr>
+    </tbody></table>
+  </div>
+
+  <!-- Laser haut corps -->
+  <div class="t-block">
+    <div class="t-cat">⊹ Épilation Laser — Haut du Corps <span class="t-badge">dès août 2026</span></div>
+    <table><tbody>
+      <tr><td>Aisselles</td><td>55 €</td></tr>
+      <tr><td>Haut du bras</td><td>65 €</td></tr>
+      <tr><td>Avant-bras</td><td>75 €</td></tr>
+      <tr><td>Mains / Doigts</td><td>20 €</td></tr>
+      <tr><td>Bras entier</td><td>115 €</td></tr>
+      <tr><td>Ligne abdominale</td><td>25 €</td></tr>
+      <tr><td>Ventre complet</td><td>40 €</td></tr>
+      <tr><td>Haut du dos</td><td>105 €</td></tr>
+      <tr><td>Bas du dos</td><td>80 €</td></tr>
+      <tr><td>Dos entier</td><td>160 €</td></tr>
+    </tbody></table>
+  </div>
+
+  <!-- Laser bas corps -->
+  <div class="t-block">
+    <div class="t-cat">⊹ Épilation Laser — Bas du Corps <span class="t-badge">dès août 2026</span></div>
+    <table><tbody>
+      <tr><td>Maillot classique</td><td>55 €</td></tr>
+      <tr><td>Maillot échancré</td><td>60 €</td></tr>
+      <tr><td>Maillot intégral</td><td>90 €</td></tr>
+      <tr><td>Fesse + intérieur cuisse</td><td>140 €</td></tr>
+      <tr><td>½ jambe</td><td>115 €</td></tr>
+      <tr><td>Pied</td><td>35 €</td></tr>
+      <tr><td>Carré cuisse</td><td>75 €</td></tr>
+      <tr><td>Cuisse</td><td>150 €</td></tr>
+      <tr><td>Jambe complète</td><td>170 €</td></tr>
+    </tbody></table>
+  </div>
+
+  <!-- Forfaits -->
+  <div class="t-block">
+    <div class="t-cat">★ Forfaits Combinés <span class="t-badge">dès août 2026</span></div>
+    <table><tbody>
+      <tr><td>Maillot classique + Aisselles</td><td>105 €</td></tr>
+      <tr><td>Maillot échancré + Aisselles</td><td>115 €</td></tr>
+      <tr><td>Maillot complet + Aisselles</td><td>130 €</td></tr>
+      <tr><td>Maillot classique + Sif (intime)</td><td>100 €</td></tr>
+      <tr><td>Maillot complet + Sif (intime)</td><td>120 €</td></tr>
+      <tr><td>½ Jambe + Aisselles</td><td>150 €</td></tr>
+      <tr><td>½ Jambe + Maillot classique</td><td>160 €</td></tr>
+      <tr><td>½ Jambe + Maillot complet</td><td>180 €</td></tr>
+      <tr><td>½ Jambe + Maillot échancré</td><td>170 €</td></tr>
+      <tr><td>½ Jambes + Maillot classique + Aisselles</td><td>200 €</td></tr>
+      <tr><td>½ Jambes + Maillot échancré + Aisselles</td><td>210 €</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="divider">— ✦ —</div>
+</section>
+
+<!-- FAQ BLANCHIMENT -->
+<section id="faq">
+  <div class="section-label">Questions Fréquentes</div>
+  <div class="section-title">Tout savoir sur le <em>blanchiment</em></div>
+  <p class="section-sub">Vos questions, nos réponses — pour aborder votre séance en toute confiance.</p>
+
+  <div class="faq-grid">
+
+    <div class="faq-item">
+      <div class="faq-q">⏱ Combien de temps dure le traitement ?</div>
+      <div class="faq-a">
+        Le blanchiment <strong>Classique</strong> dure environ <strong>1 heure</strong>, et le <strong>White Glow Luxe</strong> environ <strong>1h30</strong>. <strong>2 séances sont idéales</strong> pour obtenir un résultat optimal et prolongé.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">📅 Combien de temps durent les résultats ?</div>
+      <div class="faq-a">
+        Les résultats durent généralement entre <strong>12 et 16 mois</strong>. La tenue dépend de votre hygiène bucco-dentaire, de votre consommation d'aliments ou boissons colorantes et du tabac. Une <strong>retouche de 20 minutes tous les 6 mois</strong> est recommandée pour maintenir l'éclat.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">🪥 Peut-on utiliser une brosse à dents électrique ?</div>
+      <div class="faq-a">
+        Nous déconseillons l'utilisation d'une brosse à dents électrique durant les <strong>7 jours suivant le traitement</strong>, afin de préserver les résultats et éviter toute sensibilité.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">🦷 Quel dentifrice utiliser après le soin ?</div>
+      <div class="faq-a">
+        Nous recommandons d'utiliser du <strong>Sensodyne pendant au moins 1 semaine</strong> après le traitement, pour limiter la sensibilité et favoriser la bonne tenue du résultat.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">💎 Le blanchiment agit-il sur les facettes ou couronnes ?</div>
+      <div class="faq-a">
+        Non. Le blanchiment <strong>n'agit pas sur les facettes, couronnes ou autres restaurations dentaires</strong>. Il agit uniquement sur l'émail naturel de vos dents.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">✨ Quelle formule choisir ?</div>
+      <div class="faq-a">
+        Si vous souhaitez un résultat <strong>naturel et frais</strong>, optez pour le <strong>Classique</strong>. Pour un rendu <strong>plus blanc, plus lumineux et plus longue durée</strong>, le <strong>White Glow Luxe</strong> est la formule idéale.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY -->
+<div class="why-wrap" id="why">
+  <div class="why-l">
+    <div class="section-label">Pourquoi Skinlux</div>
+    <div class="section-title">Une expertise <em>au service</em><br>de votre beauté</div>
+    <p class="section-sub" style="color:var(--text);">Techniques modernes et regard esthétique pour des résultats naturels, visibles et durables.</p>
+  </div>
+  <div class="why-r">
+    <ul class="why-list">
+      <li><div class="wi">✦</div><div class="wt"><strong>Matériel professionnel certifié</strong><p>Équipements de dernière génération, sûrs et efficaces pour tous types de peau.</p></div></li>
+      <li><div class="wi">◈</div><div class="wt"><strong>Protocoles personnalisés</strong><p>Chaque séance débute par une analyse pour un soin totalement adapté à vos objectifs.</p></div></li>
+      <li><div class="wi">❋</div><div class="wt"><strong>Résultats visibles & durables</strong><p>Techniques éprouvées qui traitent en profondeur pour des effets qui s'inscrivent dans le temps.</p></div></li>
+      <li><div class="wi">◉</div><div class="wt"><strong>Cadre confidentiel & bienveillant</strong><p>Un espace intime où vous vous sentez écoutée, respectée et choyée à chaque visite.</p></div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Réservation</div>
+  <div class="section-title">Prenez <em>rendez-vous</em></div>
+  <p class="section-sub">La prise de contact se fait uniquement via notre page Facebook. Nous vous répondons rapidement.</p>
+  <a href="https://www.facebook.com/share/1GQ6AZpVg1/" class="wa-big">📘 &nbsp;Contacter sur Facebook</a>
+  <div class="ci-row">
+    <div class="ci"><div class="ci-label">Contact</div><div class="ci-val">Via Facebook</div></div>
+    
+    <div class="ci"><div class="ci-label">Laser</div><div class="ci-val">Disponible dès août 2026</div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">Skinlux</div>
+  <div class="f-copy">© 2025 Skinlux — Institut de Beauté. Tous droits réservés.</div>
+</footer>
+
+</body>
+</html>
